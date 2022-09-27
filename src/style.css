@@ -1,0 +1,35 @@
+.month {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto;
+    width: 80%
+}
+
+.small-calendar-month {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto;
+}
+
+.day {
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    text-align: center;
+    padding: 0px 0px 100px 10px;
+}
+
+.button-header {
+    border: 1px
+}
+
+.below-header {
+    display: flex;
+}
+
+.sidebar {
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    width: 20%
+}
+
+.small-calendar-header {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px
+}
