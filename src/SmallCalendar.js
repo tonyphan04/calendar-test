@@ -39,6 +39,7 @@ export default function SmallCalendar() {
     function handleNextMonth() {
         setCurrentMonthIdx(currentMonthIdx + 1);
     }
+    const format = "DD-MM-YY";
     function getDayClass(day) {
         const format = "DD-MM-YY";
         const nowDay = dayjs().format(format);
@@ -61,22 +62,24 @@ export default function SmallCalendar() {
                             "MMMM YYYY"
                         )}
                     </Typography>
-                    <Button onClick={handlePrevMonth}>
-                        <ChevronLeftIcon></ChevronLeftIcon>
-                    </Button>
-                    <Button onClick={handleNextMonth}>
-                        <ChevronRightIcon></ChevronRightIcon>
-                    </Button>
+                    <Box sx={{ flexGrow: 2 }}>
+                        <Button onClick={handlePrevMonth}>
+                            <ChevronLeftIcon></ChevronLeftIcon>
+                        </Button>
+                        <Button onClick={handleNextMonth}>
+                            <ChevronRightIcon></ChevronRightIcon>
+                        </Button>
+                    </Box>
                 </Box>
             </header>
             <div>
-                <TableContainer component={Paper}>
-                    <Table>
+                <TableContainer component={Paper} sx={{ width: { xl: 300, lg: 300, md: 300, sm: 300 } }}>
+                    <Table >
                         <TableBody>
                             <TableRow>
                                 {currentMonth[0].map((day, i) => (
                                     <TableCell>
-                                        <Typography key={i} >
+                                        <Typography key={i} sx={{ fontSize: 10 }}>
                                             {day.format("dd").charAt(0)}
                                         </Typography>
                                     </TableCell>
@@ -86,17 +89,40 @@ export default function SmallCalendar() {
                                 <TableRow key={i} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                     {row.map((day, idx) => (
                                         <TableCell>
-                                            <Typography
-                                                sx={{ cursor: "pointer" }}
-                                                key={idx}
-                                                onClick={() => {
-                                                    setSmallCalendarMonth(currentMonthIdx);
-                                                    setDaySelected(day);
-                                                }}
-                                                className={`py-1 w-full ${getDayClass(day)}`}
-                                            >
-                                                <Typography>{day.format("D")}</Typography>
-                                            </Typography>
+                                            {
+                                                (dayjs().format(format) === day.format(format)) ? <Typography
+                                                    sx={{ cursor: "pointer", fontSize: 10, backgroundColor: "#2196f3", borderRadius: 9999, color: "white", }}
+                                                    key={idx}
+                                                    onClick={() => {
+                                                        setSmallCalendarMonth(currentMonthIdx);
+                                                        setDaySelected(day);
+                                                    }}
+                                                >
+                                                    {day.format("D")}
+                                                </Typography> : <Typography
+                                                    sx={{ cursor: "pointer", fontSize: 10 }}
+                                                    key={idx}
+                                                    onClick={() => {
+                                                        setSmallCalendarMonth(currentMonthIdx);
+                                                        setDaySelected(day);
+                                                    }}
+                                                >
+                                                    {day.format("D")}
+                                                </Typography>
+                                            }
+                                            {/* {
+                                                (day.format(format) === (daySelected && daySelected.format(format))) ? <Typography
+                                                    sx={{ cursor: "pointer", fontSize: 10, backgroundColor: "#bbdefb", borderRadius: 9999, color: "#1e88e5" }}
+                                                    key={idx}
+                                                    onClick={() => {
+                                                        setSmallCalendarMonth(currentMonthIdx);
+                                                        setDaySelected(day);
+                                                    }}
+                                                    className={`py-1 w-full ${getDayClass(day)}`}
+                                                >
+                                                    {day.format("D")}
+                                                </Typography> : ''
+                                            } */}
                                         </TableCell>
                                     ))}
                                 </TableRow>
@@ -106,6 +132,6 @@ export default function SmallCalendar() {
                 </TableContainer>
 
             </div>
-        </div>
+        </div >
     )
 }

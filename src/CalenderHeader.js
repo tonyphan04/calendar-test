@@ -21,7 +21,7 @@ export default function CalenderHeader() {
         );
     }
     return (
-        <Box sx={{ display: 'flex', my: 2 }}>
+        <Box sx={{ display: 'flex', my: 2, ml: 60 }}>
             <Button variant="outlined" onClick={handleReset}>
                 Today
             </Button>

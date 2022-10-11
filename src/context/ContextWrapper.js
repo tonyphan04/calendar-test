@@ -10,7 +10,9 @@ import dayjs from "dayjs";
 function savedEventsReducer(state, { type, payload }) {
     switch (type) {
         case "push":
-            return [...state, payload];
+            let newArray = state.slice()
+            newArray.splice(payload.id, 0, payload)
+            return newArray
         case "update":
             return state.map((evt) =>
                 evt.id === payload.id ? payload : evt

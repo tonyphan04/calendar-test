@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, Paper } from "@mui/material";
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
@@ -6,6 +6,11 @@ import ScheduleIcon from '@mui/icons-material/Schedule';
 import SegmentIcon from '@mui/icons-material/Segment';
 import React, { useContext, useState } from "react";
 import GlobalContext from "./context/GlobalContext";
+import dayjs, { Dayjs } from 'dayjs';
+import TextField from '@mui/material/TextField';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 
 export default function EventModal() {
     const {
@@ -21,19 +26,14 @@ export default function EventModal() {
     const [description, setDescription] = useState(
         selectedEvent ? selectedEvent.description : ""
     );
-    const [selectedLabel, setSelectedLabel] = useState(
-        selectedEvent
-            ? labelsClasses.find((lbl) => lbl === selectedEvent.label)
-            : labelsClasses[0]
-    );
-
+    const [value, setValue] = React.useState(selectedEvent ? selectedEvent.value : "");
     function handleSubmit(e) {
         e.preventDefault();
         const calendarEvent = {
             title,
             description,
-            label: selectedLabel,
             day: daySelected.valueOf(),
+            value,
             id: selectedEvent ? selectedEvent.id : Date.now(),
         };
         if (selectedEvent) {
@@ -46,9 +46,8 @@ export default function EventModal() {
     }
     return (
         <>
-            <Box sx={{ border: 1, width: 500 }}>
+            <Paper sx={{ width: 400 }}>
                 <Box sx={{ display: 'flex' }}>
-                    <DragHandleIcon></DragHandleIcon>
                     <Box>
                         {selectedEvent && (
                             <Button>
@@ -72,39 +71,47 @@ export default function EventModal() {
                 <Box>
                     <Box>
                         <div></div>
-                        <input
-                            type="text"
-                            name="title"
+                        <TextField
                             placeholder="Add title"
                             value={title}
                             required
-                            className="pt-3 border-0 text-gray-600 text-xl font-semibold pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
                             onChange={(e) => setTitle(e.target.value)}
                         />
                         <ScheduleIcon></ScheduleIcon>
                         <Typography>{daySelected.format("dddd, MMMM DD")}</Typography>
                         <SegmentIcon></SegmentIcon>
-                        <input
+                        <TextField
                             type="text"
                             name="description"
                             placeholder="Add a description"
                             value={description}
                             required
-                            className="pt-3 border-0 text-gray-600 pb-2 w-full border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </Box>
                 </Box>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <TimePicker
+                        label="Basic example"
+                        value={value}
+                        onChange={(newValue) => {
+                            setValue(newValue);
+                        }}
+                        renderInput={(params) => <TextField {...params} />}
+                        sx={{ width: 70 }}
+                    />
+                </LocalizationProvider>
                 <Box>
                     <Button
                         variant="outlined"
                         type="submit"
                         onClick={handleSubmit}
+                        sx={{ mt: 5 }}
                     >
                         Save
                     </Button>
                 </Box>
-            </Box>
+            </Paper>
         </>
     );
 }
